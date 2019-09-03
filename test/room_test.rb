@@ -10,7 +10,7 @@ describe "Room class" do
       expect(@room).must_be_kind_of Hotel::Room
     end
     
-    it "correctly saves parameters" do
+    it "correctly saves instance variables" do
       expect(@room.id).must_equal 1
       expect(@room.reservation).must_be_kind_of Array
       expect(@room.reservation.length).must_equal 0
