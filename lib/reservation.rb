@@ -1,9 +1,6 @@
-require_relative 'reserv_system'
-
 module Hotel
-  class Reservation < ReservSystem
+  class Reservation
     def initialize()
-      # super(id)
     end
   end
 end
