@@ -19,6 +19,5 @@ describe "DateRange class" do
       expect(@date.end_time).must_be_kind_of Date
       expect(@date.end_time.to_s).must_equal "2019-04-18"
     end
-    
   end
 end
