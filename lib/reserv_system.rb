@@ -4,12 +4,15 @@ require_relative 'date_range'
 
 module Hotel
   class ReservSystem
+    attr_reader :rooms
+    
     def initialize()
       @rooms = []
       
-      counter = 1
+      room_num = 1
       NUM_OF_ROOMS.times do
-        Room.new(counter)
+        rooms << Room.new(room_num)
+        room_num +=1
       end
     end
   end
