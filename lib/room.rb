@@ -1,6 +1,3 @@
-RATE_OF_ROOM = 200
-NUM_OF_ROOMS = 20
-
 module Hotel
   class Room
     attr_reader :id
