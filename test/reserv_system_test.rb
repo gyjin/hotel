@@ -21,20 +21,31 @@ describe "ReservSystem class" do
   end
   
   describe "ReservSystem methods" do
-    before do
-      @reserv_system = Hotel::ReservSystem.new
-      @reserv_system.make_reservation('2019-3-1', '2019-3-6')
-    end
-    
-    it "can make a new reservation" do
-      expect(@reserv_system.reservations).must_be_kind_of Array
-      expect(@reserv_system.reservations.length).must_equal 1
-    end
-    
-    it "can assign a room to a new reservation" do
-      expect(@reserv_system.reservations[0]).must_be_kind_of Hotel::Reservation
-      expect(@reserv_system.reservations[0].room_assigned).must_be_kind_of Hotel::Room
-      expect(@reserv_system.reservations[0].room_assigned.id).must_equal 1
+    describe "making a new reservation" do
+      before do
+        @reserv_system = Hotel::ReservSystem.new
+        @reserv_system.make_reservation('2019-3-1', '2019-3-6')
+      end
+      
+      it "can make a new reservation" do
+        expect(@reserv_system.reservations).must_be_kind_of Array
+        expect(@reserv_system.reservations.length).must_equal 1
+      end
+      
+      it "can assign a room to a new reservation" do
+        expect(@reserv_system.reservations[0]).must_be_kind_of Hotel::Reservation
+        expect(@reserv_system.reservations[0].room_assigned).must_be_kind_of Hotel::Room
+        expect(@reserv_system.reservations[0].room_assigned.id).must_equal 1
+      end
+      
+      it "raises an exception if no rooms are available" do
+        @reserv_system.rooms.each do |curr_room|
+          curr_room.reservation = ["full"]
+        end
+        expect{
+          @reserv_system.make_reservation('2019-3-1', '2019-3-6')
+        }.must_raise ArgumentError
+      end
     end
   end
 end
