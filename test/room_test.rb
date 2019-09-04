@@ -16,7 +16,5 @@ describe "Room class" do
       expect(@room.reservation.length).must_equal 0
       expect(@room.rate).must_equal 200
     end
-    
-    
   end
 end

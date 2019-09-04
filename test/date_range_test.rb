@@ -27,7 +27,6 @@ describe "DateRange class" do
     end
   end
   
-  
   describe "DateRange methods" do
     before do
       @date = Hotel::DateRange.new('2019-4-16', '2019-4-20')
