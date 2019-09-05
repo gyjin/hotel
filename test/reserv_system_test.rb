@@ -17,7 +17,6 @@ describe "ReservSystem class" do
       expect(@reserv_system.rooms.last.id).must_equal 20
       expect(@reserv_system.rooms[10].id).must_equal 11
     end
-    
   end
   
   describe "ReservSystem methods" do
@@ -47,6 +46,29 @@ describe "ReservSystem class" do
         }.must_raise ArgumentError
       end
     end
+    
+    describe "searching for reservations on a given date" do
+      before do 
+        @reserv_system = Hotel::ReservSystem.new
+        @reserv_system.make_reservation('2019-3-1', '2019-3-6')
+        @reserv_system.make_reservation('2019-3-4', '2019-3-6')
+      end
+      
+      it "can return all reservations on a given date" do
+        expect(@reserv_system.reservations_on_date('2019-3-4')).must_be_kind_of Array
+        expect(@reserv_system.reservations_on_date('2019-3-4').length).must_equal 2
+        expect(@reserv_system.reservations_on_date('2019-3-4')[0]).must_be_kind_of Hotel::Reservation
+        expect(@reserv_system.reservations_on_date('2019-3-4')[0].date_range.start_time).must_be_kind_of Date
+        expect(@reserv_system.reservations_on_date('2019-3-4')[0].date_range.start_time.to_s).must_equal '2019-03-01'
+      end
+      
+      it "raises an exception if no reservations are on a given date" do
+        expect{
+          @reserv_system.reservations_on_date('2019-2-16')
+        }.must_raise ArgumentError
+      end
+    end
   end
 end
+
 

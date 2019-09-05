@@ -37,5 +37,21 @@ module Hotel
       
       @reservations << Reservation.new(start_time, end_time, room_assigned)
     end
+    
+    def reservations_on_date(date)
+      date = Date.parse(date)
+      reservations_on_date = []
+      @reservations.each do |curr_res|
+        if date >= curr_res.date_range.start_time && date <= curr_res.date_range.end_time
+          reservations_on_date << curr_res
+        end
+      end
+      
+      if reservations_on_date.length == 0
+        raise ArgumentError.new("There are no reservations on this date.")
+      end
+      
+      return reservations_on_date
+    end
   end
 end
