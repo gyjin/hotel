@@ -11,14 +11,7 @@ module Hotel
     attr_reader :rooms, :reservations
     
     def initialize()
-      @rooms = []
-      
-      room_num = 1
-      NUM_OF_ROOMS.times do
-        rooms << Room.new(room_num)
-        room_num +=1
-      end
-      
+      @rooms = Hotel::Room.all
       @reservations = []
     end
     

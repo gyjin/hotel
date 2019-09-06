@@ -25,6 +25,8 @@ describe "DateRange class" do
         Hotel::DateRange.new('2019-4-20', '2019-4-18')
       }.must_raise ArgumentError
     end
+    
+    # check for correct format 
   end
   
   describe "DateRange methods" do
