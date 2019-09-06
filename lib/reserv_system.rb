@@ -25,11 +25,15 @@ module Hotel
       end
       
       if room_assigned == nil
-        raise ArgumentError.new("No rooms are available.")
+        return ("No rooms are available for that date range.")
       end
       
       @reservations << Reservation.new(start_time, end_time, room_assigned)
     end
+    
+    # def find_avail_room
+    
+    # end
     
     def reservations_on_date(date)
       date = Date.parse(date)
@@ -41,7 +45,7 @@ module Hotel
       end
       
       if reservations_on_date.length == 0
-        raise ArgumentError.new("There are no reservations on this date.")
+        return ("There are no reservations on this date.")
       end
       
       return reservations_on_date

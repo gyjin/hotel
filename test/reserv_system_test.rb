@@ -37,13 +37,11 @@ describe "ReservSystem class" do
         expect(@reserv_system.reservations[0].room_assigned.id).must_equal 1
       end
       
-      it "raises an exception if no rooms are available" do
+      it "returns a 'no rooms are available on given date' if so" do
         @reserv_system.rooms.each do |curr_room|
           curr_room.reservation = ["full"]
         end
-        expect{
-          @reserv_system.make_reservation('2019-3-1', '2019-3-6')
-        }.must_raise ArgumentError
+        expect(@reserv_system.make_reservation('2019-3-1', '2019-3-6')).must_equal "No rooms are available for that date range."
       end
     end
     
@@ -62,10 +60,8 @@ describe "ReservSystem class" do
         expect(@reserv_system.reservations_on_date('2019-3-4')[0].date_range.start_time.to_s).must_equal '2019-03-01'
       end
       
-      it "raises an exception if no reservations are on a given date" do
-        expect{
-          @reserv_system.reservations_on_date('2019-2-16')
-        }.must_raise ArgumentError
+      it "returns a 'no reservations are on a given date' message if so" do
+        expect(@reserv_system.reservations_on_date('2019-2-16')).must_equal "There are no reservations on this date."
       end
     end
   end
