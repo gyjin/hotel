@@ -31,40 +31,75 @@ describe "ReservSystem class" do
         expect(@reserv_system.reservations.length).must_equal 1
       end
       
-      it "can assign a room to a new reservation" do
+      it "can correctly assign a room to a new reservation" do
         expect(@reserv_system.reservations[0]).must_be_kind_of Hotel::Reservation
         expect(@reserv_system.reservations[0].room_assigned).must_be_kind_of Hotel::Room
         expect(@reserv_system.reservations[0].room_assigned.id).must_equal 1
+        
+        @reserv_system.make_reservation('2019-3-4', '2019-3-8')
+        expect(@reserv_system.reservations.length).must_equal 2
+        expect(@reserv_system.reservations[1].room_assigned.id).must_equal 2
       end
       
       it "returns a 'no rooms are available on given date' if so" do
         @reserv_system.rooms.each do |curr_room|
-          curr_room.reservation = ["full"]
+          curr_room.reservation = [Hotel::Reservation.new('2019-1-1', '2019-1-5', curr_room)]
         end
-        expect(@reserv_system.make_reservation('2019-3-1', '2019-3-6')).must_equal "No rooms are available for that date range."
+        expect(@reserv_system.make_reservation('2019-1-1', '2019-1-5')).must_equal "Cannot make a reservation for that date range. No rooms available."
       end
     end
     
-    describe "searching for reservations on a given date" do
-      before do 
+    describe "determining date overlap" do
+      before do
         @reserv_system = Hotel::ReservSystem.new
+        @date_1 = Date.parse('2019-4-06')
+        @date_2 = Date.parse('2019-4-10')
+        @date_3 = Date.parse('2019-4-14')
+        @date_4 = Date.parse('2019-4-18')
+      end
+      
+      it "returns false if the end of one date range overlaps the beginning of another" do
+        expect(@reserv_system.overlap?(@date_1, @date_3, @date_2, @date_4)).must_equal true
+        expect(@reserv_system.overlap?(@date_2, @date_4, @date_1, @date_3)).must_equal true
+      end
+      
+      it "returns false if a date range is inside the other" do
+        expect(@reserv_system.overlap?(@date_1, @date_4, @date_2, @date_3)).must_equal true
+        expect(@reserv_system.overlap?(@date_2, @date_3, @date_1, @date_4)).must_equal true
+      end
+      
+      it "returns true if the end of one date range is on the same day as the start of another" do
+        expect(@reserv_system.overlap?(@date_1, @date_2, @date_2, @date_3)).must_equal false
+        expect(@reserv_system.overlap?(@date_2, @date_3, @date_1, @date_2)).must_equal false
+      end
+      
+      it "returns true if the date ranges do not overlap" do
+        expect(@reserv_system.overlap?(@date_1, @date_2, @date_3, @date_4)).must_equal false
+      end
+    end
+    
+    describe "listing all available rooms for a date range" do
+      before do
+        @reserv_system = Hotel::ReservSystem.new
+      end
+      
+      it "can correctly return all available rooms" do
         @reserv_system.make_reservation('2019-3-1', '2019-3-6')
-        @reserv_system.make_reservation('2019-3-4', '2019-3-6')
+        @reserv_system.make_reservation('2019-3-5', '2019-3-8')
+        @reserv_system.make_reservation('2019-4-1', '2019-4-5')
+        
+        @all_rooms = @reserv_system.not_reserved_on_date_range('2019-3-2', '2019-4-3')
+        expect(@all_rooms).must_be_kind_of Array
+        expect(@all_rooms.length).must_equal 18
       end
       
-      it "can return all reservations on a given date" do
-        expect(@reserv_system.reservations_on_date('2019-3-4')).must_be_kind_of Array
-        expect(@reserv_system.reservations_on_date('2019-3-4').length).must_equal 2
-        expect(@reserv_system.reservations_on_date('2019-3-4')[0]).must_be_kind_of Hotel::Reservation
-        expect(@reserv_system.reservations_on_date('2019-3-4')[0].date_range.start_time).must_be_kind_of Date
-        expect(@reserv_system.reservations_on_date('2019-3-4')[0].date_range.start_time.to_s).must_equal '2019-03-01'
-      end
-      
-      it "returns a 'no reservations are on a given date' message if so" do
-        expect(@reserv_system.reservations_on_date('2019-2-16')).must_equal "There are no reservations on this date."
+      it "returns a 'no rooms are available on given date' if so" do
+        20.times do 
+          @reserv_system.make_reservation('2019-3-1', '2019-3-6')
+        end
+        expect(@reserv_system.not_reserved_on_date_range('2019-3-1', '2019-3-6')).must_equal "There are no rooms available for that date range."
       end
     end
   end
 end
-
 
