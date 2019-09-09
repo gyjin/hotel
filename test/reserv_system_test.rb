@@ -41,11 +41,11 @@ describe "ReservSystem class" do
         expect(@reserv_system.reservations[1].room_assigned.id).must_equal 2
       end
       
-      it "returns a 'no rooms are available on given date' if so" do
+      it "raises an error if a reservation is made when all rooms are booked" do
         @reserv_system.rooms.each do |curr_room|
           curr_room.reservation = [Hotel::Reservation.new('2019-1-1', '2019-1-5', curr_room)]
         end
-        expect(@reserv_system.make_reservation('2019-1-1', '2019-1-5')).must_equal "Cannot make a reservation for that date range. No rooms available."
+        expect{@reserv_system.make_reservation('2019-1-1', '2019-1-5')}.must_raise ArgumentError
       end
     end
     

@@ -6,7 +6,6 @@ module Hotel
       @room_assigned = room_assigned
       @start_time = Date.parse(start_time)
       @end_time = Date.parse(end_time)
-      # @date_range = DateRange.new(start_time, end_time)
       @cost = days_between * RATE_OF_ROOM 
     end
     

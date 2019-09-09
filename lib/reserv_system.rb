@@ -18,10 +18,9 @@ module Hotel
         @reservations << new_res
         not_reserved_rooms[0].reservation << new_res
       else
-        return ("Cannot make a reservation for that date range. No rooms available.")
+        raise ArgumentError.new("Cannot make a reservation for that date range. No rooms available.")
       end
     end
-    
     
     def not_reserved_on_date_range(start_time, end_time)
       start_time = Date.parse(start_time)

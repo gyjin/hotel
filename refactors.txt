@@ -1,0 +1,23 @@
+Refactors I've done so far:
+
+1. Added a room.all method, instead of initializing all room instances 
+  inside of the ReservSystem initialization
+2. Removed the DateRange class because it was not being used much. 
+  Most of the string-to-Date conversion was being done elsewhere 
+
+
+Refactors I would like to do: 
+
+1. A lot of my tests seem redundant. While I want to make sure every
+  possible scenario is covered and that my code is doing what I want it
+  to, I may be able to cut some out
+  - use let instead of before/do
+2. The reserv_system class has some bulky methods. Not sure at the 
+  moment if I could remove some of the responsibilities in each to
+  its own method, but want to look into it more
+3. Will need to complete wave-3, adding hotel blocks
+  - potentially add a subclass to Reservation class, or make it its own 
+    class with object composition 
+4. I just realized I didn't put in any errors for wrong input
+  - incorrect start/end time formats, data types
+  - tests to make sure these are being caught
