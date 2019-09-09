@@ -1,7 +1,3 @@
-# require_relative 'room'
-# require_relative 'reservation'
-# require_relative 'date_range'
-
 RATE_OF_ROOM = 200
 NUM_OF_ROOMS = 20
 
@@ -39,7 +35,7 @@ module Hotel
         else
           curr_room.reservation.each do |each_res|
             if overlap?(start_time, end_time, 
-              each_res.date_range.start_time, each_res.date_range.end_time) == true
+              each_res.start_time, each_res.end_time) == true
               break
             else
               not_reserved_rooms << curr_room

@@ -12,7 +12,7 @@ describe "Reservation class" do
     end
     
     it "correctly saves instance variables" do
-      expect(@reservation.date_range).must_be_kind_of Hotel::DateRange
+      expect(@reservation.start_time).must_be_kind_of Date
       expect(@reservation.cost).must_equal 800
       expect(@reservation.room_assigned).must_be_kind_of Hotel::Room
       expect(@reservation.room_assigned.id).must_equal 3
