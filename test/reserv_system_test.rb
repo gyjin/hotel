@@ -49,35 +49,6 @@ describe "ReservSystem class" do
       end
     end
     
-    describe "determining date overlap" do
-      before do
-        @reserv_system = Hotel::ReservSystem.new
-        @date_1 = Date.parse('2019-4-06')
-        @date_2 = Date.parse('2019-4-10')
-        @date_3 = Date.parse('2019-4-14')
-        @date_4 = Date.parse('2019-4-18')
-      end
-      
-      it "returns false if the end of one date range overlaps the beginning of another" do
-        expect(@reserv_system.overlap?(@date_1, @date_3, @date_2, @date_4)).must_equal true
-        expect(@reserv_system.overlap?(@date_2, @date_4, @date_1, @date_3)).must_equal true
-      end
-      
-      it "returns false if a date range is inside the other" do
-        expect(@reserv_system.overlap?(@date_1, @date_4, @date_2, @date_3)).must_equal true
-        expect(@reserv_system.overlap?(@date_2, @date_3, @date_1, @date_4)).must_equal true
-      end
-      
-      it "returns true if the end of one date range is on the same day as the start of another" do
-        expect(@reserv_system.overlap?(@date_1, @date_2, @date_2, @date_3)).must_equal false
-        expect(@reserv_system.overlap?(@date_2, @date_3, @date_1, @date_2)).must_equal false
-      end
-      
-      it "returns true if the date ranges do not overlap" do
-        expect(@reserv_system.overlap?(@date_1, @date_2, @date_3, @date_4)).must_equal false
-      end
-    end
-    
     describe "listing all available rooms for a date range" do
       before do
         @reserv_system = Hotel::ReservSystem.new
