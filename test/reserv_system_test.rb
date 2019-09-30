@@ -54,21 +54,20 @@ describe "ReservSystem class" do
         @reserv_system = Hotel::ReservSystem.new
       end
       
-      it "can correctly return all available rooms" do
+      it "can return all rooms as available for first-ever reservation" do
+        all_rooms = @reserv_system.not_reserved_on_date_range('2019-3-1', '2019-3-6')
+        expect(all_rooms).must_be_kind_of Array
+        expect(all_rooms.length).must_equal 20
+      end
+      
+      it "can correctly return all available rooms after previous reservations have been made" do
         @reserv_system.make_reservation('2019-3-1', '2019-3-6')
         @reserv_system.make_reservation('2019-3-5', '2019-3-8')
         @reserv_system.make_reservation('2019-4-1', '2019-4-5')
         
-        @all_rooms = @reserv_system.not_reserved_on_date_range('2019-3-2', '2019-4-3')
-        expect(@all_rooms).must_be_kind_of Array
-        expect(@all_rooms.length).must_equal 18
-      end
-      
-      it "returns a 'no rooms are available on given date' if so" do
-        20.times do 
-          @reserv_system.make_reservation('2019-3-1', '2019-3-6')
-        end
-        expect(@reserv_system.not_reserved_on_date_range('2019-3-1', '2019-3-6')).must_equal "There are no rooms available for that date range."
+        all_rooms = @reserv_system.not_reserved_on_date_range('2019-3-2', '2019-4-3')
+        expect(all_rooms).must_be_kind_of Array
+        expect(all_rooms.length).must_equal 18
       end
     end
   end

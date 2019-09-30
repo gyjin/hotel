@@ -1,5 +1,6 @@
 RATE_OF_ROOM = 200
 NUM_OF_ROOMS = 20
+require 'pry'
 
 module Hotel
   class ReservSystem
@@ -13,19 +14,16 @@ module Hotel
     def make_reservation(start_time, end_time)
       not_reserved_rooms = not_reserved_on_date_range(start_time, end_time)
       
-      if not_reserved_rooms.class == Array
+      if not_reserved_rooms.length == 0
+        raise ArgumentError.new("Cannot make a reservation for that date range. No rooms available.")
+      else
         new_res = Reservation.new(start_time, end_time, not_reserved_rooms[0])
         @reservations << new_res
         not_reserved_rooms[0].reservation << new_res
-      else
-        raise ArgumentError.new("Cannot make a reservation for that date range. No rooms available.")
       end
     end
     
     def not_reserved_on_date_range(start_time, end_time)
-      start_time = Date.parse(start_time)
-      end_time = Date.parse(end_time)
-      
       not_reserved_rooms = []
       
       @rooms.each do |curr_room|
@@ -33,29 +31,14 @@ module Hotel
           not_reserved_rooms << curr_room
         else
           curr_room.reservation.each do |each_res|
-            if overlap?(start_time, end_time, 
-              each_res.start_time, each_res.end_time) == true
-              break
-            else
+            if each_res.overlap?(start_time, end_time) == false
               not_reserved_rooms << curr_room
             end
           end
         end
       end
       
-      if not_reserved_rooms.length == 0
-        return ("There are no rooms available for that date range.")
-      else
-        return not_reserved_rooms
-      end
-    end
-    
-    def overlap?(first_start, first_end, second_start, second_end)
-      if first_start < second_end && second_start < first_end
-        return true
-      else
-        return false
-      end
+      return not_reserved_rooms
     end
   end
 end
