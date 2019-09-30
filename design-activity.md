@@ -45,3 +45,10 @@ Implementation B.
 Bonus question once you've read Metz ch. 3: Which implementation is more loosely coupled?
 
 Implementation B.
+
+
+
+Refactoring Hotel:
+One place in my Hotel project that takes on multiple roles was the ReservSystem#not_reserved_on_date_range method. It was reaching inside of each room, then each reservation of that room, then the start/end times of that reservation to determine if there was an overlap of dates between that of the existing reservation and the dates of the new reservation. The changes I need to make are moving the ReservSystem#overlap? method into the Reservation class, making sure that ReservSystem just receives a boolean back from the Reservation#overlap? method, and making minor adjustments to my test codes to fit the new syntax. Changing the tests would involve moving the overlap? tests from reserv_system_test.rb to reservations_test.rb. 
+
+This design change would be an improvement because ReservSystem will be less coupled with Reservation. ReservSystem would no longer be reaching through Reservation and getting info from those reservation instances. Instead, ReservSystem will be asking Reservation for info, and Reservation will be passing back a boolean. If any changes were made to reservations in the future, this decoupling now would make that easier later. 
